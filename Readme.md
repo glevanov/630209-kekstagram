@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Григорий Леванов](https://up.htmlacademy.ru/javascript/13/user/630209).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий Донецкий](https://up.htmlacademy.ru/javascript/13/user/497669).
 
 ---
 
