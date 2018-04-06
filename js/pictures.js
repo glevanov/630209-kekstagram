@@ -27,13 +27,17 @@ function getRandomInteger(min, max) {
   );
 }
 
-for (var i = 0; i < PICTURES_QUANTITY; i++) {
-  var picElement = {
-    url: 'photos/' + i + '.jpg',
-    likes: getRandomInteger(PICTURES_LIKES_MIN, PICTURES_LIKES_MAX),
-    comments: PICTURES_COMMENTS[getRandomInteger(0, PICTURES_COMMENTS.length - 1)],
-    description: PICTURES_DESCRIPTION[getRandomInteger(0, PICTURES_DESCRIPTION.length - 1)]
-  };
+function populatePicturesArray() {
+  for (var i = 0; i < PICTURES_QUANTITY; i++) {
+    var picElement = {
+      url: 'photos/' + i + '.jpg',
+      likes: getRandomInteger(PICTURES_LIKES_MIN, PICTURES_LIKES_MAX),
+      comments: PICTURES_COMMENTS[getRandomInteger(0, PICTURES_COMMENTS.length - 1)],
+      description: PICTURES_DESCRIPTION[getRandomInteger(0, PICTURES_DESCRIPTION.length - 1)]
+    };
 
-  picturesArray.push(picElement);
+    picturesArray.push(picElement);
+  }
 }
+
+populatePicturesArray ();
