@@ -63,16 +63,21 @@ function populatePicturesArray() {
 populatePicturesArray();
 
 // Отрисовываем случайные картинки с использованием тестовых данных
-var pictureTemplate = document.querySelector('#picture').content;
-var picturesElement = document.querySelector('.pictures');
+function outputPictures() {
 
-for (var k = 0; k <= PICTURES_QUANTITY; k++) {
-  var pictureElement = pictureTemplate.cloneNode(true);
+  var pictureTemplate = document.querySelector('#picture').content;
+  var picturesElement = document.querySelector('.pictures');
 
-  // Вставляем в контент в шаблон
-  pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
-  pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
-  pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
+  for (var k = 0; k <= PICTURES_QUANTITY; k++) {
+    var pictureElement = pictureTemplate.cloneNode(true);
 
-  picturesElement.appendChild(pictureElement);
+    // Вставляем в контент в шаблон
+    pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
+    pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
+    pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
+
+    picturesElement.appendChild(pictureElement);
+  }
 }
+
+outputPictures();
