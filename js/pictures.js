@@ -48,7 +48,7 @@ function getCommentsArray() {
 
 // Наполняем массив тестовых данных
 function populatePicturesArray() {
-  for (var i = 0; i < PICTURES_QUANTITY; i++) {
+  for (var i = 1; i <= PICTURES_QUANTITY; i++) {
     var picElement = {
       url: 'photos/' + i + '.jpg',
       likes: getRandomInteger(PICTURES_LIKES_MIN, PICTURES_LIKES_MAX),
@@ -66,8 +66,11 @@ populatePicturesArray();
 var pictureTemplate = document.querySelector('#picture').content;
 var picturesElement = document.querySelector('.pictures');
 
-for (var k = 0; k < PICTURES_QUANTITY; k++) {
+for (var k = 0; k <= PICTURES_QUANTITY; k++) {
   var pictureElement = pictureTemplate.cloneNode(true);
+
+  // Вставляем url в картинку
+  pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
 
   picturesElement.appendChild(pictureElement);
 }
