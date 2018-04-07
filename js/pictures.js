@@ -68,7 +68,7 @@ function outputPictures() {
   var pictureTemplate = document.querySelector('#picture').content;
   var picturesElement = document.querySelector('.pictures');
 
-  for (var k = 0; k <= PICTURES_QUANTITY; k++) {
+  for (var k = 0; k < PICTURES_QUANTITY; k++) {
     var pictureElement = pictureTemplate.cloneNode(true);
 
     // Вставляем в контент в шаблон
@@ -81,3 +81,30 @@ function outputPictures() {
 }
 
 outputPictures();
+
+// Показывает большую картинку и заполняет её данными
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
+bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
+
+// Генерирует от одного до двух случайных комментария для большой картинки
+function getBigPictureComments() {
+  var comments = '';
+  var comment = '';
+
+  for (var l = 0; l < getRandomInteger(1, 2); l++) {
+    comment = '<li class="social__comment social__comment--text">\n' +
+      '  <img class="social__picture" src="img/avatar-' + getRandomInteger(1, 6) + '.svg" \n' +
+      '    alt="Аватар комментатора фотографии" \n' +
+      '    width="35" height="35">' + getComment() + '\n' +
+      '</li>';
+    comments += comment;
+  }
+
+  return comments;
+}
+
+bigPicture.querySelector('.social__comments').innerHTML = getBigPictureComments();
+bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
+bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
