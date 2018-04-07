@@ -27,17 +27,38 @@ function getRandomInteger(min, max) {
   );
 }
 
+function getDescription() {
+  return PICTURES_DESCRIPTION[getRandomInteger(0, PICTURES_DESCRIPTION.length - 1)];
+}
+
+function getComment() {
+  return PICTURES_COMMENTS[getRandomInteger(0, PICTURES_COMMENTS.length - 1)];
+}
+
+function getCommentsArray() {
+  var commentsArray = [];
+  var commentsIndex = getRandomInteger(1, 2);
+
+  for (var j = 0; j < commentsIndex; j++) {
+    commentsArray.push(getComment());
+  }
+
+  return commentsArray;
+}
+
 function populatePicturesArray() {
   for (var i = 0; i < PICTURES_QUANTITY; i++) {
     var picElement = {
       url: 'photos/' + i + '.jpg',
       likes: getRandomInteger(PICTURES_LIKES_MIN, PICTURES_LIKES_MAX),
-      comments: PICTURES_COMMENTS[getRandomInteger(0, PICTURES_COMMENTS.length - 1)],
-      description: PICTURES_DESCRIPTION[getRandomInteger(0, PICTURES_DESCRIPTION.length - 1)]
+      comments: getCommentsArray(),
+      description: getDescription()
     };
 
     picturesArray.push(picElement);
   }
 }
 
-populatePicturesArray ();
+populatePicturesArray();
+
+var pictureTemplate = document.querySelector('#picture');
