@@ -69,8 +69,10 @@ var picturesElement = document.querySelector('.pictures');
 for (var k = 0; k <= PICTURES_QUANTITY; k++) {
   var pictureElement = pictureTemplate.cloneNode(true);
 
-  // Вставляем url в картинку
+  // Вставляем в контент в шаблон
   pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
+  pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
+  pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
 
   picturesElement.appendChild(pictureElement);
 }
