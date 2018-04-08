@@ -1,6 +1,5 @@
 'use strict';
-// Здесь генерируем тестовые данные для случайных пользовательских картинок
-var picturesArray = [];
+
 var PICTURES_QUANTITY = 25;
 var PICTURES_LIKES_MIN = 15;
 var PICTURES_LIKES_MAX = 250;
@@ -20,6 +19,8 @@ var PICTURES_DESCRIPTION = [
   'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
   'Вот это тачка!'
 ];
+
+var picturesArray = [];
 
 function getRandomInteger(min, max) {
   return Math.floor(
@@ -46,7 +47,7 @@ function getCommentsArray() {
   return commentsArray;
 }
 
-// Наполняем массив тестовых данных
+// Наполняет массив тестовых данных
 function populatePicturesArray() {
   for (var i = 1; i <= PICTURES_QUANTITY; i++) {
     var picElement = {
@@ -60,9 +61,7 @@ function populatePicturesArray() {
   }
 }
 
-populatePicturesArray();
-
-// Отрисовываем случайные картинки с использованием тестовых данных
+// Отрисовыват случайные картинки с использованием тестовых данных
 function outputPictures() {
 
   var pictureTemplate = document.querySelector('#picture').content;
@@ -71,7 +70,7 @@ function outputPictures() {
   for (var k = 0; k < PICTURES_QUANTITY; k++) {
     var pictureElement = pictureTemplate.cloneNode(true);
 
-    // Вставляем в контент в шаблон
+    // Вставляем контент в шаблон
     pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
     pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
     pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
@@ -80,31 +79,35 @@ function outputPictures() {
   }
 }
 
-outputPictures();
-
 // Показывает большую картинку и заполняет её данными
-var bigPicture = document.querySelector('.big-picture');
-bigPicture.classList.remove('hidden');
-bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
-bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
+function outputBigPicture() {
+  var bigPicture = document.querySelector('.big-picture');
+  bigPicture.classList.remove('hidden');
+  bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
+  bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
 
-// Генерирует от одного до двух случайных комментария для большой картинки
-function getBigPictureComments() {
-  var comments = '';
-  var comment = '';
+  // Генерирует от одного до двух случайных комментария для большой картинки
+  function getBigPictureComments() {
+    var comments = '';
+    var comment = '';
 
-  for (var l = 0; l < getRandomInteger(1, 2); l++) {
-    comment = '<li class="social__comment social__comment--text">\n' +
-      '  <img class="social__picture" src="img/avatar-' + getRandomInteger(1, 6) + '.svg" \n' +
-      '    alt="Аватар комментатора фотографии" \n' +
-      '    width="35" height="35">' + getComment() + '\n' +
-      '</li>';
-    comments += comment;
+    for (var l = 0; l < getRandomInteger(1, 2); l++) {
+      comment = '<li class="social__comment social__comment--text">\n' +
+        '  <img class="social__picture" src="img/avatar-' + getRandomInteger(1, 6) + '.svg" \n' +
+        '    alt="Аватар комментатора фотографии" \n' +
+        '    width="35" height="35">' + getComment() + '\n' +
+        '</li>';
+      comments += comment;
+    }
+
+    return comments;
   }
 
-  return comments;
+  bigPicture.querySelector('.social__comments').innerHTML = getBigPictureComments();
+  bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
+  bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
 }
 
-bigPicture.querySelector('.social__comments').innerHTML = getBigPictureComments();
-bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
-bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
+populatePicturesArray();
+outputPictures();
+outputBigPicture();
