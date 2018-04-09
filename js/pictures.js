@@ -81,10 +81,11 @@ function outputPictures() {
 
 // Показывает большую картинку и заполняет её данными
 function outputBigPicture() {
-  var COMMENTS_QUANTITY = getRandomInteger(1, 2);
   var bigPicture = document.querySelector('.big-picture');
   var commentsSection = bigPicture.querySelector('.social__comments');
   var commentsIndex;
+
+  var COMMENTS_QUANTITY = getRandomInteger(1, 2);
 
   // Генерирует от одного до двух случайных комментария для большой картинки
   // ...сначала разметку
@@ -110,12 +111,13 @@ function outputBigPicture() {
     }
   }
 
+  // Показывает большую картинку и вставляет данные
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
   bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
-
+  // Обнуляет блок комментариев и вставляет случайные комментарии
   commentsSection.textContent = '';
   commentsSection.insertAdjacentHTML('beforeend', getBigPictureCommentsMarkup());
 
