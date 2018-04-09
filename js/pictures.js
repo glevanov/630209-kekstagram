@@ -81,31 +81,45 @@ function outputPictures() {
 
 // Показывает большую картинку и заполняет её данными
 function outputBigPicture() {
+  var COMMENTS_QUANTITY = getRandomInteger(1, 2);
   var bigPicture = document.querySelector('.big-picture');
+  var commentsSection = bigPicture.querySelector('.social__comments');
+  var commentsIndex;
+
+  // Генерирует от одного до двух случайных комментария для большой картинки
+  // ...сначала разметку
+  function getBigPictureCommentsMarkup() {
+    var markup = '';
+    var markupElement = '';
+
+    for (commentsIndex = 0; commentsIndex < COMMENTS_QUANTITY; commentsIndex++) {
+      markupElement = '<li class="social__comment social__comment--text">\n' +
+        '  <img class="social__picture" src="img/avatar-' + getRandomInteger(1, 6) + '.svg" \n' +
+        '    alt="Аватар комментатора фотографии" \n' +
+        '    width="35" height="35">\n' +
+        '</li>';
+      markup += markupElement;
+    }
+
+    return markup;
+  }
+  // ...потом текст комментария
+  function getBigPictureCommentsContent() {
+    for (commentsIndex = 0; commentsIndex < COMMENTS_QUANTITY; commentsIndex++) {
+      commentsSection.childNodes.item(commentsIndex).insertAdjacentText('beforeend', getComment());
+    }
+  }
+
   bigPicture.classList.remove('hidden');
   bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
   bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
-
-  // Генерирует от одного до двух случайных комментария для большой картинки
-  function getBigPictureComments() {
-    var comments = '';
-    var comment = '';
-
-    for (var l = 0; l < getRandomInteger(1, 2); l++) {
-      comment = '<li class="social__comment social__comment--text">\n' +
-        '  <img class="social__picture" src="img/avatar-' + getRandomInteger(1, 6) + '.svg" \n' +
-        '    alt="Аватар комментатора фотографии" \n' +
-        '    width="35" height="35">' + getComment() + '\n' +
-        '</li>';
-      comments += comment;
-    }
-
-    return comments;
-  }
-
-  bigPicture.querySelector('.social__comments').innerHTML = getBigPictureComments();
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
+
+  commentsSection.textContent = '';
+  commentsSection.insertAdjacentHTML('beforeend', getBigPictureCommentsMarkup());
+
+  getBigPictureCommentsContent();
 }
 
 populatePicturesArray();
