@@ -1,5 +1,9 @@
 'use strict';
 
+// #01# Переменные
+var picturesArray = [];
+
+// #02# Константы
 var PICTURES_QUANTITY = 25;
 var PICTURES_LIKES_MIN = 15;
 var PICTURES_LIKES_MAX = 250;
@@ -19,9 +23,9 @@ var PICTURES_DESCRIPTION = [
   'Цените каждое мгновенье. Цените тех, кто рядом с вами и отгоняйте все сомненья. Не обижайте всех словами......',
   'Вот это тачка!'
 ];
+// #03# DOM переменные
 
-var picturesArray = [];
-
+// #04# Объявление функций
 function getRandomInteger(min, max) {
   return Math.floor(
       Math.random() * (max - min + 1) + min
@@ -79,13 +83,18 @@ function outputPictures() {
   }
 }
 
+function displayHiddenElement(hiddenElement) {
+  hiddenElement.classList.remove('hidden');
+}
+
 // Показывает большую картинку и заполняет её данными
 function outputBigPicture() {
-  var bigPicture = document.querySelector('.big-picture');
-  var commentsSection = bigPicture.querySelector('.social__comments');
   var commentsIndex;
 
   var COMMENTS_QUANTITY = getRandomInteger(1, 2);
+
+  var bigPicture = document.querySelector('.big-picture');
+  var commentsSection = bigPicture.querySelector('.social__comments');
 
   // Генерирует от одного до двух случайных комментария для большой картинки
   // ...сначала разметку
@@ -112,7 +121,7 @@ function outputBigPicture() {
   }
 
   // Показывает большую картинку и вставляет данные
-  bigPicture.classList.remove('hidden');
+  // displayHiddenElement(bigPicture);
   bigPicture.querySelector('.big-picture__img img').src = picturesArray[0].url;
   bigPicture.querySelector('.likes-count').textContent = picturesArray[0].likes;
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
