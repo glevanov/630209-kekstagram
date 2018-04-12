@@ -87,6 +87,10 @@ function displayHiddenElement(hiddenElement) {
   hiddenElement.classList.remove('hidden');
 }
 
+function hideElement(visibleElement) {
+  visibleElement.classList.add('hidden');
+}
+
 // Показывает большую картинку и заполняет её данными
 function outputBigPicture() {
   var commentsIndex;
@@ -136,3 +140,39 @@ function outputBigPicture() {
 populatePicturesArray();
 outputPictures();
 outputBigPicture();
+
+// Блок про загрузку фото
+var ESC_KEYCODE = 27;
+var ENTER_KEYCODE = 13;
+
+var uploadSection = document.querySelector('.img-upload');
+var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
+var uploadFileInput = uploadSection.querySelector('#upload-file');
+var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
+
+function closeUpload() {
+  hideElement(uploadOverlay);
+  uploadOverlay.value = '';
+  document.removeEventListener('keydown', onEscPress);
+}
+
+function onEscPress(evt) {
+  if (evt.keyCode === ESC_KEYCODE) {
+    closeUpload();
+  }
+}
+
+uploadFileInput.addEventListener('change', function () {
+  displayHiddenElement(uploadOverlay);
+  document.addEventListener('keydown', onEscPress);
+});
+
+uploadFileInput.addEventListener('keydown', function (evt) {
+  if (evt.keyCode === ENTER_KEYCODE) {
+    displayHiddenElement(uploadOverlay);
+  }
+});
+
+uploadCancelButton.addEventListener('click', function () {
+  closeUpload();
+});
