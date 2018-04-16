@@ -32,6 +32,7 @@ var uploadSection = document.querySelector('.img-upload');
 var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
 var uploadFileInput = uploadSection.querySelector('#upload-file');
 var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
+// var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
 var slider = document.querySelector('.scale');
 var sliderPin = slider.querySelector('.scale__pin');
 var sliderLine = slider.querySelector('.scale__line');
@@ -87,6 +88,7 @@ function outputPictures() {
 
     // Вставляем контент в шаблон
     pictureElement.querySelector('.picture__img').src = picturesArray[k].url;
+    pictureElement.querySelector('.picture__img').setAttribute('data-index', k);
     pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
     pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
 
@@ -124,6 +126,7 @@ function outputBigPicture(evt) {
   var CURRENT_IMAGE_SRC = currentImage.attributes[1].value;
   var CURRENT_LIKES = currentElement.querySelector('.picture__stat--likes').firstChild.data;
   var CURRENT_COMMENTS = Number(currentElement.querySelector('.picture__stat--comments').firstChild.data);
+  var CURRENT_COMMENTS_INDEX = currentImage.dataset.index;
 
   // Генерирует комментарии для большой картинки
   // ...сначала разметку
@@ -145,7 +148,8 @@ function outputBigPicture(evt) {
   // ...потом текст комментария
   function getBigPictureCommentsContent() {
     for (commentsIndex = 0; commentsIndex < CURRENT_COMMENTS; commentsIndex++) {
-      commentsSection.childNodes.item(commentsIndex).insertAdjacentText('beforeend', getComment());
+      commentsSection.childNodes.item(commentsIndex).insertAdjacentText('beforeend',
+          picturesArray[CURRENT_COMMENTS_INDEX].comments[commentsIndex]);
     }
   }
 
@@ -155,7 +159,7 @@ function outputBigPicture(evt) {
   bigPicture.querySelector('.likes-count').textContent = CURRENT_LIKES;
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
   bigPicture.querySelector('.social__comment-loadmore').classList.add('visually-hidden');
-  // Обнуляет блок комментариев и вставляет случайные комментарии
+  // Обнуляет блок комментариев и вставляет комментарии
   commentsSection.textContent = '';
   commentsSection.insertAdjacentHTML('beforeend', getBigPictureCommentsMarkup());
 
