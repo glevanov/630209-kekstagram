@@ -131,6 +131,7 @@ function applyCurrentFilter(currentFilter) {
   var BRIGHTNESS_MAX = 3;
 
   function getFilterValue(max, value, min) {
+    // Аргумент min опционален и по умолчанию равен 0
     if (typeof min === 'undefined') {
       min = 0;
     }
