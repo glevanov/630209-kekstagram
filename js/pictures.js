@@ -2,6 +2,7 @@
 
 // #01# Переменные
 var picturesArray = [];
+var filterValue = 20;
 
 // #02# Константы
 var ESC_KEYCODE = 27;
@@ -32,7 +33,8 @@ var uploadSection = document.querySelector('.img-upload');
 var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
 var uploadFileInput = uploadSection.querySelector('#upload-file');
 var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
-// var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
+var uploadFiltersList = uploadSection.querySelector('.effects__list');
+var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
 var slider = document.querySelector('.scale');
 var sliderPin = slider.querySelector('.scale__pin');
 var sliderLine = slider.querySelector('.scale__line');
@@ -103,9 +105,48 @@ function appendPicturesEventListeners() {
   }
 }
 
+function appendFiltersEventListeners() {
+  var filterControls = uploadFiltersList.querySelectorAll('.effects__preview');
+  for (var i = 0; i < filterControls.length; i++) {
+    filterControls[i].addEventListener('click', onFilterClick);
+  }
+}
+
 function onPictureClick(evt) {
   outputBigPicture(evt);
   addEscListener();
+}
+
+function onFilterClick(evt) {
+  var currentFilter = evt.currentTarget.classList[1];
+  applyCurrentFilter(currentFilter);
+}
+
+function applyCurrentFilter(currentFilter) {
+  function outputFilter(filterName) {
+    // hi
+  }
+
+  switch (currentFilter) {
+    case 'effects__preview--none':
+      uploadPicturePreview.setAttribute('style', '');
+      break;
+    case 'effects__preview--chrome':
+      uploadPicturePreview.setAttribute('style', 'filter: grayscale(1)');
+      break;
+    case 'effects__preview--sepia':
+      uploadPicturePreview.setAttribute('style', 'filter: sepia(1)');
+      break;
+    case 'effects__preview--marvin':
+      uploadPicturePreview.setAttribute('style', 'filter: invert(100%)');
+      break;
+    case 'effects__preview--phobos':
+      uploadPicturePreview.setAttribute('style', 'filter: blur(3px)');
+      break;
+    case 'effects__preview--heat':
+      uploadPicturePreview.setAttribute('style', 'filter: brightness(3)');
+      break;
+  }
 }
 
 function displayHiddenElement(hiddenElement) {
@@ -224,10 +265,11 @@ bigPictureCancelButton.addEventListener('click', function () {
 
 // Временно - выводит в консоль значение слайдера насыщенности эффекта
 sliderPin.addEventListener('mouseup', function (evt) {
-  console.log(getSliderValue(evt));
+  filterValue = getSliderValue(evt);
 });
 
 // #06# Вызовы функций
 populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
+appendFiltersEventListeners();
