@@ -131,7 +131,7 @@ function applyCurrentFilter(currentFilter) {
   var BRIGHTNESS_MAX = 3;
 
   function getFilterValue(max, value, min) {
-    if (min === undefined) {
+    if (typeof min === 'undefined') {
       min = 0;
     }
     return (max - min) * (value / 100) + min;
