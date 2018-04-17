@@ -123,8 +123,18 @@ function onFilterClick(evt) {
 }
 
 function applyCurrentFilter(currentFilter) {
-  function outputFilter(filterName) {
-    // hi
+  var GRAYSCALE_MAX = 1;
+  var SEPIA_MAX = 1;
+  var INVERT_MAX = 100; // %
+  var BLUR_MAX = 3; // px
+  var BRIGHTNESS_MIN = 1;
+  var BRIGHTNESS_MAX = 3;
+
+  function getFilterValue(max, value, min) {
+    if (min === undefined) {
+      min = 0;
+    }
+    return (max - min) * (value / 100) + min;
   }
 
   switch (currentFilter) {
@@ -132,20 +142,22 @@ function applyCurrentFilter(currentFilter) {
       uploadPicturePreview.setAttribute('style', '');
       break;
     case 'effects__preview--chrome':
-      uploadPicturePreview.setAttribute('style', 'filter: grayscale(1)');
+      uploadPicturePreview.setAttribute('style', 'filter: grayscale(' + getFilterValue(GRAYSCALE_MAX, filterValue) + ')');
       break;
     case 'effects__preview--sepia':
-      uploadPicturePreview.setAttribute('style', 'filter: sepia(1)');
+      uploadPicturePreview.setAttribute('style', 'filter: sepia(' + getFilterValue(SEPIA_MAX, filterValue) + ')');
       break;
     case 'effects__preview--marvin':
-      uploadPicturePreview.setAttribute('style', 'filter: invert(100%)');
+      uploadPicturePreview.setAttribute('style', 'filter: invert(' + getFilterValue(INVERT_MAX, filterValue) + '%)');
       break;
     case 'effects__preview--phobos':
-      uploadPicturePreview.setAttribute('style', 'filter: blur(3px)');
+      uploadPicturePreview.setAttribute('style', 'filter: blur(' + getFilterValue(BLUR_MAX, filterValue) + 'px)');
       break;
     case 'effects__preview--heat':
-      uploadPicturePreview.setAttribute('style', 'filter: brightness(3)');
+      uploadPicturePreview.setAttribute('style', 'filter: brightness(' + getFilterValue(BRIGHTNESS_MAX, filterValue, BRIGHTNESS_MIN) + ')');
       break;
+    default:
+      uploadPicturePreview.setAttribute('style', '');
   }
 }
 
@@ -263,7 +275,6 @@ bigPictureCancelButton.addEventListener('click', function () {
   closeBigPicture();
 });
 
-// Временно - выводит в консоль значение слайдера насыщенности эффекта
 sliderPin.addEventListener('mouseup', function (evt) {
   filterValue = getSliderValue(evt);
 });
