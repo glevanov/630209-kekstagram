@@ -244,6 +244,85 @@ function getSliderValue(evt) {
   return sliderValue;
 }
 
+function validateHashTags(inputHashtagsString) {
+  var errorMessageObject = {};
+  var hashtagsArray = inputHashtagsString.split(' ');
+  var HASHTAGS_MAX_NUMBER = 5;
+  var HASHTAG_MAX_LENGTH = 20;
+
+  function checkHashtagStart(hashString) {
+    if (hashString[0] !== '#') {
+      errorMessageObject['Хэш-тэг должен начинаться с решетки'] = true;
+    }
+  }
+
+  function checkHashtagLength(hashString) {
+    if (hashString.length === 1) {
+      errorMessageObject['Хэш-тэг не может состояить только из решетки'] = true;
+    } else if (hashString.length > HASHTAG_MAX_LENGTH) {
+      errorMessageObject['Хэш-тэг длиннее ' + HASHTAG_MAX_LENGTH + ' символов'] = true;
+    }
+  }
+
+  function checkHashtagNumber(hashArray) {
+    if (hashArray.length > HASHTAGS_MAX_NUMBER) {
+      errorMessageObject['Количество хэш-тэгов больше чем ' + HASHTAGS_MAX_NUMBER] = true;
+    }
+  }
+
+  function checkHashtagDuplicates(hashArray) {
+    // Если после сортировки элемент не находится после своего индекса, значит он уникальный
+    var sortedArray = hashArray.slice();
+    sortedArray = sortedArray.map(function (item) {
+      return item.toLowerCase();
+    });
+    sortedArray.sort();
+
+    for (var j = 0; j < sortedArray.length; j++) {
+      var nextIndex = j + 1;
+      if (sortedArray.indexOf(sortedArray[j], nextIndex) !== -1) {
+        errorMessageObject['Хэш-тэг не может повторяться'] = true;
+      }
+    }
+  }
+
+  function parseErrors(errorObject) {
+    // Если ошибок нет, возвращаем -1. Если есть, склеиваем в строку.
+    var errorArray = Object.keys(errorObject);
+
+    function manyErrors(arr) {
+      var result = '';
+      var separator = '; ';
+      var lastElementIndex = arr.length - 1;
+
+      for (var i = 0; i < lastElementIndex; i++) {
+        result += arr[i] + separator;
+      }
+      result += arr[lastElementIndex];
+      return result;
+
+    }
+
+    switch (errorArray.length) {
+      case 0:
+        return -1;
+      case 1:
+        return errorArray[0];
+      default:
+        return manyErrors(errorArray);
+    }
+  }
+
+  checkHashtagNumber(hashtagsArray);
+  checkHashtagDuplicates(hashtagsArray);
+  for (var i = 0; i < hashtagsArray.length; i++) {
+    checkHashtagStart(hashtagsArray[i]);
+    checkHashtagLength(hashtagsArray[i]);
+  }
+
+  return parseErrors(errorMessageObject);
+}
+
 // #05# Разное
 uploadFileInput.addEventListener('change', function () {
   displayHiddenElement(uploadOverlay);
@@ -273,3 +352,7 @@ populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
 appendFiltersEventListeners();
+
+
+var testString = '#жопа #пёсик #новыйгод';
+console.log(validateHashTags(testString));
