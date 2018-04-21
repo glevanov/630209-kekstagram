@@ -245,6 +245,7 @@ function getSliderValue(evt) {
 }
 
 function validateHashTags(inputHashtagsString) {
+  // Ошибки удобно собирать в объект с уникальными ключами, чтобы избежать проблемы их дублирования
   var errorMessageObject = {};
   var hashtagsArray = inputHashtagsString.split(' ');
   var HASHTAGS_MAX_NUMBER = 5;
@@ -311,6 +312,11 @@ function validateHashTags(inputHashtagsString) {
       default:
         return manyErrors(errorArray);
     }
+  }
+
+  // Проверяем не пустой ли у нас ввод
+  if (inputHashtagsString === '') {
+    return -1;
   }
 
   checkHashtagNumber(hashtagsArray);
