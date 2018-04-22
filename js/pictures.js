@@ -38,6 +38,7 @@ var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img
 var slider = document.querySelector('.scale');
 var sliderPin = slider.querySelector('.scale__pin');
 var sliderLine = slider.querySelector('.scale__line');
+var hashtagsInput = document.querySelector('.text__hashtags');
 
 // #04# Объявление функций
 function getRandomInteger(min, max) {
@@ -259,7 +260,7 @@ function validateHashTags(inputHashtagsString) {
 
   function checkHashtagLength(hashString) {
     if (hashString.length === 1) {
-      errorMessageObject['Хэш-тэг не может состояить только из решетки'] = true;
+      errorMessageObject['Хэш-тэг не может состояить из одного символа'] = true;
     } else if (hashString.length > HASHTAG_MAX_LENGTH) {
       errorMessageObject['Хэш-тэг длиннее ' + HASHTAG_MAX_LENGTH + ' символов'] = true;
     }
@@ -329,6 +330,15 @@ function validateHashTags(inputHashtagsString) {
   return parseErrors(errorMessageObject);
 }
 
+function onHashtagsInput(evt) {
+  var userInput = evt.currentTarget.value;
+  if (validateHashTags(userInput) === -1) {
+    hashtagsInput.setCustomValidity('');
+  } else {
+    hashtagsInput.setCustomValidity(validateHashTags(userInput));
+  }
+}
+
 // #05# Разное
 uploadFileInput.addEventListener('change', function () {
   displayHiddenElement(uploadOverlay);
@@ -353,12 +363,12 @@ sliderPin.addEventListener('mouseup', function (evt) {
   filterValue = getSliderValue(evt);
 });
 
+hashtagsInput.addEventListener('input', function (evt) {
+  onHashtagsInput(evt);
+});
+
 // #06# Вызовы функций
 populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
 appendFiltersEventListeners();
-
-
-var testString = '#жопа #пёсик #новыйгод';
-console.log(validateHashTags(testString));
