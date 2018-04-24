@@ -2,7 +2,6 @@
 
 // #01# Переменные
 var picturesArray = [];
-var filterValue = 20;
 
 // #02# Константы
 var ESC_KEYCODE = 27;
@@ -33,7 +32,7 @@ var uploadSection = document.querySelector('.img-upload');
 var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
 var uploadFileInput = uploadSection.querySelector('#upload-file');
 var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
-var uploadFiltersList = uploadSection.querySelector('.effects__list');
+// var uploadFiltersList = uploadSection.querySelector('.effects__list');
 var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
 var hashtagsInput = document.querySelector('.text__hashtags');
 
@@ -103,50 +102,21 @@ function appendPicturesEventListeners() {
   }
 }
 
-function appendFiltersEventListeners() {
+/* function appendFiltersEventListeners() {
   var filterControls = uploadFiltersList.querySelectorAll('.effects__preview');
   for (var i = 0; i < filterControls.length; i++) {
     filterControls[i].addEventListener('click', onFilterClick);
   }
-}
+}*/
 
 function onPictureClick(evt) {
   outputBigPicture(evt);
   addEscListener();
 }
 
-function onFilterClick(evt) {
+/* function onFilterClick(evt) {
   var currentFilter = evt.currentTarget.classList[1];
-  applyCurrentFilter(currentFilter);
-}
-
-function applyCurrentFilter(currentFilter) {
-  var GRAYSCALE_MAX = 1;
-  var SEPIA_MAX = 1;
-  var INVERT_MAX = 100; // %
-  var BLUR_MAX = 3; // px
-  var BRIGHTNESS_MIN = 1;
-  var BRIGHTNESS_MAX = 3;
-
-  function getFilterValue(max, value, min) {
-    // Аргумент min опционален и по умолчанию равен 0
-    if (typeof min === 'undefined') {
-      min = 0;
-    }
-    return (max - min) * (value / 100) + min;
-  }
-
-  var FILTERS_COLLECTION = {
-    'effects__preview--none': '',
-    'effects__preview--chrome': 'filter: grayscale(' + getFilterValue(GRAYSCALE_MAX, filterValue) + ')',
-    'effects__preview--sepia': 'filter: sepia(' + getFilterValue(SEPIA_MAX, filterValue) + ')',
-    'effects__preview--marvin': 'filter: invert(' + getFilterValue(INVERT_MAX, filterValue) + '%)',
-    'effects__preview--phobos': 'filter: blur(' + getFilterValue(BLUR_MAX, filterValue) + 'px)',
-    'effects__preview--heat': 'filter: brightness(' + getFilterValue(BRIGHTNESS_MAX, filterValue, BRIGHTNESS_MIN) + ')'
-  };
-
-  uploadPicturePreview.setAttribute('style', FILTERS_COLLECTION[currentFilter]);
-}
+}*/
 
 function displayHiddenElement(hiddenElement) {
   hiddenElement.classList.remove('hidden');
@@ -354,7 +324,7 @@ hashtagsInput.addEventListener('input', function (evt) {
 populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
-appendFiltersEventListeners();
+// appendFiltersEventListeners();
 
 // Временно для удобства работы
 displayHiddenElement(uploadOverlay);
@@ -403,7 +373,6 @@ displayHiddenElement(uploadOverlay);
 
       calculateSliderPosition();
       renderSliderPin();
-      console.log(sliderRelativePosition);
     }
 
     function onMouseUp(upEvt) {
@@ -424,4 +393,61 @@ displayHiddenElement(uploadOverlay);
   /* var sliderValue = Math.round(sliderRelativePosition / scaleWidth * 100) / 100; */
 
   window.slider = {sliderValue: sliderValue};
+})();
+
+// filters.js
+// Зависит от slider.js
+(function () {
+  var filterEffectLevel = window.slider.sliderValue;
+  var currentFilter = 'NONE';
+  var filterParameters = {
+    NONE: {
+      CSS: ''
+    },
+    CHROME: {
+      MIN: 0,
+      MAX: 1,
+      CSS: 'filter: grayscale(' + calculateFilterValue() + ');'
+    },
+    SEPIA: {
+      MIN: 0,
+      MAX: 1,
+      CSS: 'filter: sepia(' + calculateFilterValue() + ');'
+    },
+    MARVIN: {
+      MIN: 0,
+      MAX: 100, // %
+      CSS: 'filter: invert(' + calculateFilterValue() + '%);'
+    },
+    PHOBOS: {
+      MIN: 0,
+      MAX: 3, // px
+      CSS: 'filter: blur(' + calculateFilterValue() + 'px);'
+    },
+    HEAT: {
+      MIN: 1,
+      MAX: 3,
+      CSS: 'filter: brightness(' + calculateFilterValue() + ');'
+    }
+  };
+
+  var FILTERS_LOOKUP_DICTIONARY = {
+    'effects__preview--none': 'NONE',
+    'effects__preview--chrome': 'GRAYSCALE',
+    'effects__preview--sepia': 'SEPIA',
+    'effects__preview--marvin': 'MARVIN',
+    'effects__preview--phobos': 'PHOBOS',
+    'effects__preview--heat': 'HEAT'
+  };
+
+  function calculateFilterValue() {
+    var min = filterParameters[currentFilter].MIN;
+    var max = filterParameters[currentFilter].MAX;
+    return (max - min) * (filterEffectLevel / 100) + min;
+  }
+
+  function applyCurrentFilter() {
+    uploadPicturePreview.setAttribute('style', filterParameters[currentFilter].CSS);
+  }
+  // Навесить обработчики на клики по иконкам фильтром + события пина слайдера
 })();
