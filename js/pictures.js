@@ -35,9 +35,6 @@ var uploadFileInput = uploadSection.querySelector('#upload-file');
 var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
 var uploadFiltersList = uploadSection.querySelector('.effects__list');
 var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
-var slider = document.querySelector('.scale');
-var sliderPin = slider.querySelector('.scale__pin');
-var sliderLine = slider.querySelector('.scale__line');
 var hashtagsInput = document.querySelector('.text__hashtags');
 
 // #04# Объявление функций
@@ -235,16 +232,6 @@ function removeEscListener() {
   document.removeEventListener('keydown', onEscPress);
 }
 
-function getSliderValue(evt) {
-  var sliderXPosition = evt.clientX;
-  var scaleXLeftPosition = sliderLine.getBoundingClientRect().left;
-  var scaleXRightPosition = sliderLine.getBoundingClientRect().right;
-  var scaleWidth = scaleXRightPosition - scaleXLeftPosition;
-  var sliderRelativePosition = sliderXPosition - scaleXLeftPosition;
-  var sliderValue = Math.round(sliderRelativePosition / scaleWidth * 100) / 100;
-  return sliderValue;
-}
-
 function validateHashTags(inputHashtagsString) {
   // Ошибки удобно собирать в объект с уникальными ключами, чтобы избежать проблемы их дублирования
   var errorMessageObject = {};
@@ -359,10 +346,6 @@ bigPictureCancelButton.addEventListener('click', function () {
   closeBigPicture();
 });
 
-sliderPin.addEventListener('mouseup', function (evt) {
-  filterValue = getSliderValue(evt);
-});
-
 hashtagsInput.addEventListener('input', function (evt) {
   onHashtagsInput(evt);
 });
@@ -372,3 +355,73 @@ populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
 appendFiltersEventListeners();
+
+// Временно для удобства работы
+displayHiddenElement(uploadOverlay);
+
+// slider.js
+(function () {
+  var sliderValue = 20;
+
+  var sliderElement = document.querySelector('.scale');
+  var sliderPin = sliderElement.querySelector('.scale__pin');
+  var sliderLine = sliderElement.querySelector('.scale__line');
+
+  var SLIDER_LINE_LEFT_COORDINATE = sliderLine.getBoundingClientRect().left;
+  var SLIDER_LINE_RIGHT_COORDINATE = sliderLine.getBoundingClientRect().right;
+  var SLIDER_LINE_WIDTH = SLIDER_LINE_RIGHT_COORDINATE - SLIDER_LINE_LEFT_COORDINATE;
+
+  function onSliderClick(evt) {
+    var sliderXPosition = evt.clientX;
+
+    function onMouseMove(moveEvt) {
+      moveEvt.preventDefault();
+
+      var sliderRelativePosition;
+
+      function checkSliderBoundaries(sliderPosition) {
+        var validPosition;
+        if (sliderPosition < 0) {
+          validPosition = 0;
+        } else if (sliderPosition > SLIDER_LINE_WIDTH) {
+          validPosition = SLIDER_LINE_WIDTH;
+        } else {
+          validPosition = sliderPosition;
+        }
+        return validPosition;
+      }
+
+      function calculateSliderPosition() {
+        var horizontalShift = sliderXPosition - moveEvt.clientX;
+        sliderRelativePosition = checkSliderBoundaries(sliderPin.offsetLeft - horizontalShift);
+        sliderXPosition = moveEvt.clientX;
+      }
+
+      function renderSliderPin() {
+        sliderPin.style.left = sliderRelativePosition + 'px';
+      }
+
+      calculateSliderPosition();
+      renderSliderPin();
+      console.log(sliderRelativePosition);
+    }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
+  sliderPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    onSliderClick(evt);
+  });
+
+  /* var sliderValue = Math.round(sliderRelativePosition / scaleWidth * 100) / 100; */
+
+  window.slider = {sliderValue: sliderValue};
+})();
