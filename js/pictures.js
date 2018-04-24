@@ -398,7 +398,7 @@ displayHiddenElement(uploadOverlay);
 // filters.js
 // Зависит от slider.js
 (function () {
-  var filterEffectLevel = window.slider.sliderValue;
+  var filterEffectLevel = parseInt(window.slider.sliderValue, 10);
   var currentFilter = 'NONE';
   var filterParameters = {
     NONE: {
