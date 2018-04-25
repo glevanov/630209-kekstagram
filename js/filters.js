@@ -51,6 +51,7 @@
   var uploadSection = document.querySelector('.img-upload');
   var picturePreview = uploadSection.querySelector('.img-upload__preview img');
   var filtersList = uploadSection.querySelector('.effects__list');
+  var sliderPin = uploadSection.querySelector('.scale__pin');
 
   function setDefaultValues() {
     updateFilterEffectLevel();
@@ -98,7 +99,28 @@
     picturePreview.setAttribute('style', getFilterCSSString());
   }
 
+  // Реализует применение фильтра при движении слайдера
+  function onSliderClick() {
+    function onMouseMove(moveEvt) {
+      moveEvt.preventDefault();
+      updateFilterEffectLevel();
+      applyCurrentFilter();
+    }
+
+    function onMouseUp(upEvt) {
+      upEvt.preventDefault();
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
   setDefaultValues();
   appendFiltersEventListeners();
-  // + Навесить события пина слайдера
+  sliderPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+    onSliderClick();
+  });
 })();
