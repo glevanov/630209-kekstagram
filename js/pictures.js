@@ -336,6 +336,7 @@ displayHiddenElement(uploadOverlay);
   var sliderElement = document.querySelector('.scale');
   var sliderPin = sliderElement.querySelector('.scale__pin');
   var sliderLine = sliderElement.querySelector('.scale__line');
+  var sliderLevel = sliderElement.querySelector('.scale__level');
 
   var SLIDER_LINE_LEFT_COORDINATE = sliderLine.getBoundingClientRect().left;
   var SLIDER_LINE_RIGHT_COORDINATE = sliderLine.getBoundingClientRect().right;
@@ -367,12 +368,14 @@ displayHiddenElement(uploadOverlay);
         sliderXPosition = moveEvt.clientX;
       }
 
-      function renderSliderPin() {
+      function renderSliderPosition() {
         sliderPin.style.left = sliderRelativePosition + 'px';
+        sliderLevel.style.width = sliderValue + '%';
       }
 
       calculateSliderPosition();
-      renderSliderPin();
+      renderSliderPosition();
+      sliderValue = Math.round(sliderRelativePosition / SLIDER_LINE_WIDTH * 100);
     }
 
     function onMouseUp(upEvt) {
