@@ -32,8 +32,6 @@ var uploadSection = document.querySelector('.img-upload');
 var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
 var uploadFileInput = uploadSection.querySelector('#upload-file');
 var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
-// var uploadFiltersList = uploadSection.querySelector('.effects__list');
-var uploadPicturePreview = uploadSection.querySelector('.img-upload__preview img');
 var hashtagsInput = document.querySelector('.text__hashtags');
 
 // #04# Объявление функций
@@ -102,21 +100,10 @@ function appendPicturesEventListeners() {
   }
 }
 
-/* function appendFiltersEventListeners() {
-  var filterControls = uploadFiltersList.querySelectorAll('.effects__preview');
-  for (var i = 0; i < filterControls.length; i++) {
-    filterControls[i].addEventListener('click', onFilterClick);
-  }
-}*/
-
 function onPictureClick(evt) {
   outputBigPicture(evt);
   addEscListener();
 }
-
-/* function onFilterClick(evt) {
-  var currentFilter = evt.currentTarget.classList[1];
-}*/
 
 function displayHiddenElement(hiddenElement) {
   hiddenElement.classList.remove('hidden');
@@ -155,6 +142,7 @@ function outputBigPicture(evt) {
 
     return markup;
   }
+
   // ...потом текст комментария
   function getBigPictureCommentsContent() {
     for (commentsIndex = 0; commentsIndex < CURRENT_COMMENTS; commentsIndex++) {
@@ -324,133 +312,6 @@ hashtagsInput.addEventListener('input', function (evt) {
 populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
-// appendFiltersEventListeners();
 
 // Временно для удобства работы
 displayHiddenElement(uploadOverlay);
-
-// slider.js
-(function () {
-  var sliderValue = 20;
-
-  var sliderElement = document.querySelector('.scale');
-  var sliderPin = sliderElement.querySelector('.scale__pin');
-  var sliderLine = sliderElement.querySelector('.scale__line');
-  var sliderLevel = sliderElement.querySelector('.scale__level');
-
-  var SLIDER_LINE_LEFT_COORDINATE = sliderLine.getBoundingClientRect().left;
-  var SLIDER_LINE_RIGHT_COORDINATE = sliderLine.getBoundingClientRect().right;
-  var SLIDER_LINE_WIDTH = SLIDER_LINE_RIGHT_COORDINATE - SLIDER_LINE_LEFT_COORDINATE;
-
-  function onSliderClick(evt) {
-    var sliderXPosition = evt.clientX;
-
-    function onMouseMove(moveEvt) {
-      moveEvt.preventDefault();
-
-      var sliderRelativePosition;
-
-      function checkSliderBoundaries(sliderPosition) {
-        var validPosition;
-        if (sliderPosition < 0) {
-          validPosition = 0;
-        } else if (sliderPosition > SLIDER_LINE_WIDTH) {
-          validPosition = SLIDER_LINE_WIDTH;
-        } else {
-          validPosition = sliderPosition;
-        }
-        return validPosition;
-      }
-
-      function calculateSliderPosition() {
-        var horizontalShift = sliderXPosition - moveEvt.clientX;
-        sliderRelativePosition = checkSliderBoundaries(sliderPin.offsetLeft - horizontalShift);
-        sliderXPosition = moveEvt.clientX;
-      }
-
-      function renderSliderPosition() {
-        sliderPin.style.left = sliderRelativePosition + 'px';
-        sliderLevel.style.width = sliderValue + '%';
-      }
-
-      calculateSliderPosition();
-      renderSliderPosition();
-      sliderValue = Math.round(sliderRelativePosition / SLIDER_LINE_WIDTH * 100);
-    }
-
-    function onMouseUp(upEvt) {
-      upEvt.preventDefault();
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    }
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  }
-
-  sliderPin.addEventListener('mousedown', function (evt) {
-    evt.preventDefault();
-    onSliderClick(evt);
-  });
-
-  /* var sliderValue = Math.round(sliderRelativePosition / scaleWidth * 100) / 100; */
-
-  window.slider = {sliderValue: sliderValue};
-})();
-
-// filters.js
-// Зависит от slider.js
-(function () {
-  var filterEffectLevel = parseInt(window.slider.sliderValue, 10);
-  var currentFilter = 'NONE';
-  var filterParameters = {
-    NONE: {
-      CSS: ''
-    },
-    CHROME: {
-      MIN: 0,
-      MAX: 1,
-      CSS: 'filter: grayscale(' + calculateFilterValue() + ');'
-    },
-    SEPIA: {
-      MIN: 0,
-      MAX: 1,
-      CSS: 'filter: sepia(' + calculateFilterValue() + ');'
-    },
-    MARVIN: {
-      MIN: 0,
-      MAX: 100, // %
-      CSS: 'filter: invert(' + calculateFilterValue() + '%);'
-    },
-    PHOBOS: {
-      MIN: 0,
-      MAX: 3, // px
-      CSS: 'filter: blur(' + calculateFilterValue() + 'px);'
-    },
-    HEAT: {
-      MIN: 1,
-      MAX: 3,
-      CSS: 'filter: brightness(' + calculateFilterValue() + ');'
-    }
-  };
-
-  var FILTERS_LOOKUP_DICTIONARY = {
-    'effects__preview--none': 'NONE',
-    'effects__preview--chrome': 'GRAYSCALE',
-    'effects__preview--sepia': 'SEPIA',
-    'effects__preview--marvin': 'MARVIN',
-    'effects__preview--phobos': 'PHOBOS',
-    'effects__preview--heat': 'HEAT'
-  };
-
-  function calculateFilterValue() {
-    var min = filterParameters[currentFilter].MIN;
-    var max = filterParameters[currentFilter].MAX;
-    return (max - min) * (filterEffectLevel / 100) + min;
-  }
-
-  function applyCurrentFilter() {
-    uploadPicturePreview.setAttribute('style', filterParameters[currentFilter].CSS);
-  }
-  // Навесить обработчики на клики по иконкам фильтром + события пина слайдера
-})();
