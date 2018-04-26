@@ -8,12 +8,13 @@
   var sliderLine = sliderElement.querySelector('.scale__line');
   var sliderLevel = sliderElement.querySelector('.scale__level');
 
-  var SLIDER_LINE_LEFT_COORDINATE = sliderLine.getBoundingClientRect().left;
-  var SLIDER_LINE_RIGHT_COORDINATE = sliderLine.getBoundingClientRect().right;
-  var SLIDER_LINE_WIDTH = SLIDER_LINE_RIGHT_COORDINATE - SLIDER_LINE_LEFT_COORDINATE;
 
   function onSliderClick(evt) {
     var sliderXPosition = evt.clientX;
+
+    var SLIDER_LINE_LEFT_COORDINATE = sliderLine.getBoundingClientRect().left;
+    var SLIDER_LINE_RIGHT_COORDINATE = sliderLine.getBoundingClientRect().right;
+    var SLIDER_LINE_WIDTH = SLIDER_LINE_RIGHT_COORDINATE - SLIDER_LINE_LEFT_COORDINATE;
 
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
