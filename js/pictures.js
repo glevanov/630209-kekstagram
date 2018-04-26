@@ -312,6 +312,3 @@ hashtagsInput.addEventListener('input', function (evt) {
 populatePicturesArray();
 outputPictures();
 appendPicturesEventListeners();
-
-// Временно для удобства работы
-displayHiddenElement(uploadOverlay);

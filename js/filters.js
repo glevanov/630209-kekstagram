@@ -64,11 +64,12 @@
 
   function appendFiltersEventListeners() {
     var filterControls = filtersList.querySelectorAll('.effects__preview');
-    for (var i = 0; i < filterControls.length; i++) {
-      filterControls[i].addEventListener('click', function (evt) {
+
+    filterControls.forEach(function (filterIcon) {
+      filterIcon.addEventListener('click', function (evt) {
         onFilterClick(evt);
       });
-    }
+    });
   }
 
   function onFilterClick(evt) {
