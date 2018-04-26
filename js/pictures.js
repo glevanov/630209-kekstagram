@@ -105,14 +105,6 @@ function onPictureClick(evt) {
   addEscListener();
 }
 
-function displayHiddenElement(hiddenElement) {
-  hiddenElement.classList.remove('hidden');
-}
-
-function hideElement(visibleElement) {
-  visibleElement.classList.add('hidden');
-}
-
 // Показывает большую картинку и заполняет её данными
 function outputBigPicture(evt) {
   var commentsIndex;
@@ -152,7 +144,7 @@ function outputBigPicture(evt) {
   }
 
   // Показывает большую картинку и вставляет данные
-  displayHiddenElement(bigPicture);
+  window.util.displayHiddenElement(bigPicture);
   bigPicture.querySelector('.big-picture__img img').src = CURRENT_IMAGE_SRC;
   bigPicture.querySelector('.likes-count').textContent = CURRENT_LIKES;
   bigPicture.querySelector('.social__comment-count').classList.add('visually-hidden');
@@ -165,13 +157,13 @@ function outputBigPicture(evt) {
 }
 
 function closeUpload() {
-  hideElement(uploadOverlay);
+  window.util.hideElement(uploadOverlay);
   uploadOverlay.value = '';
   removeEscListener();
 }
 
 function closeBigPicture() {
-  hideElement(bigPicture);
+  window.util.hideElement(bigPicture);
   removeEscListener();
 }
 
@@ -286,13 +278,13 @@ function onHashtagsInput(evt) {
 
 // #05# Разное
 uploadFileInput.addEventListener('change', function () {
-  displayHiddenElement(uploadOverlay);
+  window.util.displayHiddenElement(uploadOverlay);
   addEscListener();
 });
 
 uploadFileInput.addEventListener('keydown', function (evt) {
   if (evt.keyCode === ENTER_KEYCODE) {
-    displayHiddenElement(uploadOverlay);
+    window.util.displayHiddenElement(uploadOverlay);
   }
 });
 
