@@ -58,7 +58,6 @@
   populatePicturesArray();
 
   window.data = {
-    picturesArray: picturesArray,
-    PICTURES_QUANTITY: PICTURES_QUANTITY
+    picturesArray: picturesArray
   };
 })();
