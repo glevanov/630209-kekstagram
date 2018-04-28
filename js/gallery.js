@@ -4,6 +4,9 @@
   var PICTURES_QUANTITY = window.data.picturesArray.length;
 
   var uploadSection = document.querySelector('.img-upload');
+  var uploadOverlay = uploadSection.querySelector('.img-upload__overlay');
+  var uploadFileInput = uploadSection.querySelector('#upload-file');
+  var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
 
   function outputPictures() {
     var pictureTemplate = document.querySelector('#picture').content;
@@ -12,7 +15,6 @@
     for (var k = 0; k < PICTURES_QUANTITY; k++) {
       var pictureElement = pictureTemplate.cloneNode(true);
 
-      // Вставляем контент в шаблон
       pictureElement.querySelector('.picture__img').src = window.data.picturesArray[k].url;
       pictureElement.querySelector('.picture__img').setAttribute('data-index', k);
       pictureElement.querySelector('.picture__stat--likes').textContent = window.data.picturesArray[k].likes;
@@ -34,28 +36,21 @@
     window.util.addEscListener();
   }
 
-
-  window.gallery.uploadFileInput.addEventListener('change', function () {
-    window.util.displayHiddenElement(window.gallery.uploadOverlay);
+  uploadFileInput.addEventListener('change', function () {
+    window.util.displayHiddenElement(uploadOverlay);
     window.util.addEscListener();
   });
 
-  window.gallery.uploadFileInput.addEventListener('keydown', function (evt) {
+  uploadFileInput.addEventListener('keydown', function (evt) {
     if (evt.keyCode === ENTER_KEYCODE) {
-      window.util.displayHiddenElement(window.gallery.uploadOverlay);
+      window.util.displayHiddenElement(uploadOverlay);
     }
   });
 
-  window.gallery.uploadCancelButton.addEventListener('click', function () {
+  uploadCancelButton.addEventListener('click', function () {
     window.util.closeUpload();
   });
 
   outputPictures();
   appendPicturesEventListeners();
-
-  window.gallery = {
-    uploadOverlay: uploadSection.querySelector('.img-upload__overlay'),
-    uploadFileInput: uploadSection.querySelector('#upload-file'),
-    uploadCancelButton: uploadSection.querySelector('#upload-cancel'),
-  };
 })();

@@ -2,6 +2,9 @@
 (function () {
   var ESC_KEYCODE = 27;
 
+  var uploadOverlay = document.querySelector('.img-upload__overlay');
+  var bigPicture = document.querySelector('.big-picture');
+
   window.util = {
     displayHiddenElement: function (hiddenElement) {
       hiddenElement.classList.remove('hidden');
@@ -23,12 +26,16 @@
     onEscPress: function (evt) {
       if (evt.keyCode === ESC_KEYCODE) {
         window.util.closeUpload();
-        window.gallery.closeBigPicture();
+        window.util.closeBigPicture();
       }
     },
     closeUpload: function () {
-      window.util.hideElement(window.gallery.uploadOverlay);
-      window.gallery.uploadOverlay.value = '';
+      window.util.hideElement(uploadOverlay);
+      uploadOverlay.value = '';
+      window.util.removeEscListener();
+    },
+    closeBigPicture: function () {
+      window.util.hideElement(bigPicture);
       window.util.removeEscListener();
     }
   };
