@@ -51,11 +51,13 @@
   var uploadSection = document.querySelector('.img-upload');
   var picturePreview = uploadSection.querySelector('.img-upload__preview img');
   var filtersList = uploadSection.querySelector('.effects__list');
-  var sliderPin = uploadSection.querySelector('.scale__pin');
+  var slider = uploadSection.querySelector('.img-upload__scale');
+  var sliderPin = slider.querySelector('.scale__pin');
 
   function setDefaultValues() {
     updateFilterEffectLevel();
     currentFilter = 'NONE';
+    window.util.hideElement(slider);
   }
 
   function updateFilterEffectLevel() {
@@ -77,6 +79,12 @@
     currentFilter = FILTERS_LOOKUP_DICTIONARY[currentFilterCSSClass];
     updateFilterEffectLevel();
     applyCurrentFilter();
+
+    if (currentFilter !== 'NONE') {
+      window.util.displayHiddenElement(slider);
+    } else {
+      window.util.hideElement(slider);
+    }
   }
 
   function calculateFilterValue() {
