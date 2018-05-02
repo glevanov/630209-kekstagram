@@ -22,11 +22,27 @@
         onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
       });
 
-      xhr.timeout = 10000; // 10s
+      xhr.timeout = 10000;
 
       xhr.open('GET', url);
       xhr.send();
     },
-    sendData: 'to be added later'
+    sendData: function (data, onLoad, onError) {
+      var REMOTE_URL = 'https://js.dump.academy/kekstagram';
+
+      var xhr = new XMLHttpRequest();
+      xhr.responseType = 'json';
+
+      xhr.addEventListener('load', function () {
+        if (xhr.status === 200) {
+          onLoad();
+        } else {
+          onError(xhr.response[0].errorMessage);
+        }
+      });
+
+      xhr.open('POST', REMOTE_URL);
+      xhr.send(data);
+    }
   };
 })();

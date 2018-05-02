@@ -1,6 +1,9 @@
 'use strict';
 (function () {
-  var hashtagsInput = document.querySelector('.text__hashtags');
+  var form = document.querySelector('.img-upload__form');
+  var uploadOverlay = form.querySelector('.img-upload__overlay');
+  var hashtagsInput = form.querySelector('.text__hashtags');
+  var errorOverlay = form.querySelector('.img-upload__message--error');
 
   function validateHashTags(inputHashtagsString) {
     // Ошибки удобно собирать в объект с уникальными ключами, чтобы избежать проблемы их дублирования
@@ -96,7 +99,25 @@
     }
   }
 
+  function onLoad() {
+    window.util.hideElement(uploadOverlay);
+    uploadOverlay.value = '';
+  }
+
+  function onError(errorMessage) {
+    window.util.hideElement(uploadOverlay);
+    window.util.displayHiddenElement(errorOverlay);
+    errorMessage = '— ' + errorMessage;
+    errorOverlay.querySelector('.error__links').insertAdjacentText('beforebegin', errorMessage);
+  }
+
   hashtagsInput.addEventListener('input', function (evt) {
     onHashtagsInput(evt);
   });
+
+  form.addEventListener('submit', function (evt) {
+    window.backend.sendData(new FormData(form), onLoad, onError);
+    evt.preventDefault();
+  });
+
 })();
