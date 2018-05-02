@@ -41,7 +41,7 @@
       function getBigPictureCommentsContent() {
         for (commentsIndex = 0; commentsIndex < CURRENT_COMMENTS; commentsIndex++) {
           commentsSection.childNodes.item(commentsIndex).insertAdjacentText('beforeend',
-              window.data.picturesArray[CURRENT_COMMENTS_INDEX].comments[commentsIndex]);
+              window.gallery.picturesArray[CURRENT_COMMENTS_INDEX].comments[commentsIndex]);
         }
       }
 
