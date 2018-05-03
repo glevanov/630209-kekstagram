@@ -123,6 +123,7 @@
     }
 
     function applySorting() {
+      // Хватает id текущего элемента и мэтчит соответствующую сортировку
       sortPictures[FILTERS_DICTIONARY[evt.currentTarget.id]]();
       renderPictures();
     }
@@ -148,7 +149,7 @@
 
   filtersButtons.forEach(function (it) {
     it.addEventListener('click', function (evt) {
-      onFilterClick(evt);
+      window.util.debounce(onFilterClick(evt));
     });
   });
 })();

@@ -1,6 +1,7 @@
 'use strict';
 (function () {
   var ESC_KEYCODE = 27;
+  var DEBOUNCE_INTERVAL = 500;
 
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var bigPicture = document.querySelector('.big-picture');
@@ -37,6 +38,19 @@
     closeBigPicture: function () {
       window.util.hideElement(bigPicture);
       window.util.removeEscListener();
+    },
+    debounce: function (fun) {
+      var lastTimeout = null;
+
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function () {
+          fun.apply(null, args);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();
