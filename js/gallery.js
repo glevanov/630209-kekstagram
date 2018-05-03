@@ -9,12 +9,7 @@
   var uploadFileInput = uploadSection.querySelector('#upload-file');
   var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
   var filtersSection = document.querySelector('.img-filters');
-  var FiltersButton = {
-    popular: filtersSection.querySelector('#filter-popular'),
-    latest: filtersSection.querySelector('#filter-new'),
-    discussed: filtersSection.querySelector('#filter-discussed'),
-    random: filtersSection.querySelector('#filter-random')
-  };
+  var filtersButtons = filtersSection.querySelectorAll('.img-filters__button');
 
   function getPicturesArray() {
     var REQUEST_URL = 'https://js.dump.academy/kekstagram/data';
@@ -46,27 +41,6 @@
 
     window.backend.getData(REQUEST_URL, onSuccess, onError);
   }
-
-  var sortPictures = {
-    byLikes: function () {
-      window.gallery.picturesArray.sort(function (a, b) {
-        return b.likes - a.likes;
-      });
-    },
-    byComments: function () {
-      window.gallery.picturesArray.sort(function (a, b) {
-        return b.comments.length - a.comments.length;
-      });
-    },
-    atRandom: function () {
-      window.gallery.picturesArray.sort(function () {
-        return Math.random() - 0.5;
-      });
-    },
-    asRecieved: function () {
-      window.gallery.picturesArray = picturesArrayAsReceived.slice();
-    }
-  };
 
   function drawPictures(picturesArray) {
     var PICTURES_QUANTITY = picturesArray.length;
@@ -113,6 +87,50 @@
     appendPicturesEventListeners(window.gallery.picturesArray);
   }
 
+  function onFilterClick(evt) {
+    var FILTERS_DICTIONARY = {
+      'filter-popular': 'byLikes',
+      'filter-new': 'byComments',
+      'filter-discussed': 'asRecieved',
+      'filter-random': 'atRandom'
+    };
+
+    var sortPictures = {
+      byLikes: function () {
+        window.gallery.picturesArray.sort(function (a, b) {
+          return b.likes - a.likes;
+        });
+      },
+      byComments: function () {
+        window.gallery.picturesArray.sort(function (a, b) {
+          return b.comments.length - a.comments.length;
+        });
+      },
+      atRandom: function () {
+        window.gallery.picturesArray.sort(function () {
+          return Math.random() - 0.5;
+        });
+      },
+      asRecieved: function () {
+        window.gallery.picturesArray = picturesArrayAsReceived.slice();
+      }
+    };
+
+    function toggleActiveButton() {
+      var activeButton = filtersSection.querySelector('.img-filters__button--active');
+      activeButton.classList.remove('img-filters__button--active');
+      evt.currentTarget.classList.add('img-filters__button--active');
+    }
+
+    function applySorting() {
+      sortPictures[FILTERS_DICTIONARY[evt.currentTarget.id]]();
+      renderPictures();
+    }
+
+    toggleActiveButton();
+    applySorting();
+  }
+
   getPicturesArray();
 
   uploadFileInput.addEventListener('change', function () {
@@ -128,9 +146,9 @@
     window.util.closeUpload();
   });
 
-  filtersSection.querySelectorAll('#img-filters__button').forEach(function (it) {
-    it.addEventListener('click', function () {
-      // Заглушка
+  filtersButtons.forEach(function (it) {
+    it.addEventListener('click', function (evt) {
+      onFilterClick(evt);
     });
   });
 })();
