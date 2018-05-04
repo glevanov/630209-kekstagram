@@ -1,6 +1,6 @@
 'use strict';
 (function () {
-  var SLIDER_DEFAULT_VALUE = 20;
+  var SLIDER_DEFAULT_VALUE = 100;
   window.slider = {sliderValue: SLIDER_DEFAULT_VALUE};
 
   var sliderElement = document.querySelector('.scale');
