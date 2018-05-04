@@ -19,9 +19,10 @@
       <h2 class="img-filters__title visually-hidden">Фильтр фотографий</h2>
 
       <form class="img-filters__form" action="index.html" method="get" autocomplete="off">
-        <button type=button class="img-filters__button img-filters__button--active" id="filter-popular">Популярные</button>
+        <button type=button class="img-filters__button" id="filter-popular">Популярные</button>
         <button type=button class="img-filters__button" id="filter-new">Новые</button>
-        <button type=button class="img-filters__button" id="filter-discussed">Обсуждаемые</button>
+        <button type=button class="img-filters__button img-filters__button--active" id="filter-discussed">Обсуждаемые</button>
+        <button type=button class="img-filters__button" id="filter-random">Случайные</button>
       </form>
     </section>
 
@@ -55,7 +56,7 @@
 
                   <fieldset class="img-upload__resize resize">
                     <button type="button" class="resize__control resize__control--minus">Уменьшить</button>
-                    <input type="text" class="resize__control resize__control--value" value="55%" title="Image Scale" name="scale" readonly>
+                    <input type="text" class="resize__control resize__control--value" value="100%" title="Image Scale" name="scale" readonly>
                     <button type="button" class="resize__control resize__control--plus">Увеличить</button>
                   </fieldset>
 
@@ -64,7 +65,7 @@
                   </div>
 
                   <fieldset class="img-upload__scale scale">
-                    <input type="number" class="scale__value" name="effect-level" value="20">
+                    <input type="number" class="scale__value" name="effect-level" value="100">
                     <div class="scale__line">
                       <div class="scale__pin" tabindex="0">Кнопка изменения глубины эффекта фотографии</div>
                       <div class="scale__level">Глубина эффекта фотографии</div>
@@ -212,6 +213,7 @@
   <script src="js/bigPicture.js"></script>
   <script src="js/slider.js"></script>
   <script src="js/filters.js"></script>
+  <script src="js/resize.js"></script>
   <script src="js/form.js"></script>
 
 </body>

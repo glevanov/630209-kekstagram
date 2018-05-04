@@ -1,7 +1,5 @@
 'use strict';
-// Зависит от slider.js
 (function () {
-  var filterEffectLevel;
   var currentFilter;
   var filterParameters = {
     NONE: {
@@ -49,19 +47,23 @@
   };
 
   var uploadSection = document.querySelector('.img-upload');
-  var picturePreview = uploadSection.querySelector('.img-upload__preview img');
+  var picturePreview = uploadSection.querySelector('.img-upload__preview');
   var filtersList = uploadSection.querySelector('.effects__list');
   var slider = uploadSection.querySelector('.img-upload__scale');
   var sliderPin = slider.querySelector('.scale__pin');
+  var sliderLevel = slider.querySelector('.scale__level');
+  var sliderValueInput = slider.querySelector('.scale__value');
 
-  function setDefaultValues() {
-    updateFilterEffectLevel();
-    currentFilter = 'NONE';
-    window.util.hideElement(slider);
+  function reverseFilterLookup(value) {
+    // Выполняет обратный поиск по словарю, т.е. по значению возвращяет ключ
+    return Object.keys(FILTERS_LOOKUP_DICTIONARY)[Object.values(FILTERS_LOOKUP_DICTIONARY).indexOf(value)];
   }
 
-  function updateFilterEffectLevel() {
-    filterEffectLevel = parseInt(window.slider.sliderValue, 10);
+  function setDefaultValues() {
+    resetSlider();
+    currentFilter = 'NONE';
+    picturePreview.classList.add(reverseFilterLookup(currentFilter));
+    window.util.hideElement(slider);
   }
 
   function appendFiltersEventListeners() {
@@ -77,7 +79,7 @@
   function onFilterClick(evt) {
     var currentFilterCSSClass = evt.currentTarget.classList[1];
     currentFilter = FILTERS_LOOKUP_DICTIONARY[currentFilterCSSClass];
-    updateFilterEffectLevel();
+    resetSlider();
     applyCurrentFilter();
 
     if (currentFilter !== 'NONE') {
@@ -90,7 +92,7 @@
   function calculateFilterValue() {
     var min = filterParameters[currentFilter].MIN;
     var max = filterParameters[currentFilter].MAX;
-    return (max - min) * (filterEffectLevel / 100) + min;
+    return (max - min) * (window.slider.sliderValue / 100) + min;
   }
 
   function getFilterCSSString() {
@@ -106,13 +108,14 @@
 
   function applyCurrentFilter() {
     picturePreview.setAttribute('style', getFilterCSSString());
+    picturePreview.setAttribute('class', '');
+    picturePreview.classList.add(reverseFilterLookup(currentFilter));
   }
 
   // Реализует применение фильтра при движении слайдера
   function onSliderClick() {
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
-      updateFilterEffectLevel();
       applyCurrentFilter();
     }
 
@@ -124,6 +127,14 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  }
+
+  function resetSlider() {
+    var INIT_SLIDER_VALUE = 100;
+    sliderPin.style.left = INIT_SLIDER_VALUE + '%';
+    sliderLevel.style.width = INIT_SLIDER_VALUE + '%';
+    sliderValueInput.setAttribute('value', INIT_SLIDER_VALUE);
+    window.slider.sliderValue = INIT_SLIDER_VALUE;
   }
 
   setDefaultValues();

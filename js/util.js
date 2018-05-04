@@ -1,9 +1,11 @@
 'use strict';
 (function () {
   var ESC_KEYCODE = 27;
+  var DEBOUNCE_INTERVAL = 500;
 
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var bigPicture = document.querySelector('.big-picture');
+  var pageBody = document.querySelector('body');
 
   window.util = {
     displayHiddenElement: function (hiddenElement) {
@@ -37,6 +39,20 @@
     closeBigPicture: function () {
       window.util.hideElement(bigPicture);
       window.util.removeEscListener();
+      pageBody.classList.remove('modal-open');
+    },
+    debounce: function (fun) {
+      var lastTimeout = null;
+
+      return function () {
+        var args = arguments;
+        if (lastTimeout) {
+          window.clearTimeout(lastTimeout);
+        }
+        lastTimeout = window.setTimeout(function (evt) {
+          fun.apply(evt, args);
+        }, DEBOUNCE_INTERVAL);
+      };
     }
   };
 })();

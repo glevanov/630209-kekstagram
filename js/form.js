@@ -3,6 +3,7 @@
   var form = document.querySelector('.img-upload__form');
   var uploadOverlay = form.querySelector('.img-upload__overlay');
   var hashtagsInput = form.querySelector('.text__hashtags');
+  var commentsInput = form.querySelector('.text__description');
   var errorOverlay = form.querySelector('.img-upload__message--error');
 
   function validateHashTags(inputHashtagsString) {
@@ -114,7 +115,18 @@
   hashtagsInput.addEventListener('input', function (evt) {
     onHashtagsInput(evt);
   });
-
+  hashtagsInput.addEventListener('focusin', function () {
+    window.util.removeEscListener();
+  });
+  hashtagsInput.addEventListener('focusout', function () {
+    window.util.addEscListener();
+  });
+  commentsInput.addEventListener('focusin', function () {
+    window.util.removeEscListener();
+  });
+  commentsInput.addEventListener('focusout', function () {
+    window.util.addEscListener();
+  });
   form.addEventListener('submit', function (evt) {
     window.backend.sendData(new FormData(form), onLoad, onError);
     evt.preventDefault();
