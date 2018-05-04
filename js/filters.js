@@ -47,7 +47,7 @@
   };
 
   var uploadSection = document.querySelector('.img-upload');
-  var picturePreview = uploadSection.querySelector('.img-upload__preview img');
+  var picturePreview = uploadSection.querySelector('.img-upload__preview');
   var filtersList = uploadSection.querySelector('.effects__list');
   var slider = uploadSection.querySelector('.img-upload__scale');
   var sliderPin = slider.querySelector('.scale__pin');
