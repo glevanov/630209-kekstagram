@@ -10,6 +10,7 @@
   var uploadCancelButton = uploadSection.querySelector('#upload-cancel');
   var filtersSection = document.querySelector('.img-filters');
   var filtersButtons = filtersSection.querySelectorAll('.img-filters__button');
+  var pageBody = document.querySelector('body');
 
   function getPicturesArray() {
     var REQUEST_URL = 'https://js.dump.academy/kekstagram/data';
@@ -80,6 +81,7 @@
   function onPictureClick(evt) {
     window.bigPicture.outputBigPicture(evt);
     window.util.addEscListener();
+    pageBody.classList.add('modal-open');
   }
 
   function renderPictures() {

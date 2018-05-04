@@ -5,6 +5,7 @@
 
   var uploadOverlay = document.querySelector('.img-upload__overlay');
   var bigPicture = document.querySelector('.big-picture');
+  var pageBody = document.querySelector('body');
 
   window.util = {
     displayHiddenElement: function (hiddenElement) {
@@ -38,6 +39,7 @@
     closeBigPicture: function () {
       window.util.hideElement(bigPicture);
       window.util.removeEscListener();
+      pageBody.classList.remove('modal-open');
     },
     debounce: function (fun) {
       var lastTimeout = null;
