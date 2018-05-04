@@ -47,8 +47,8 @@
         if (lastTimeout) {
           window.clearTimeout(lastTimeout);
         }
-        lastTimeout = window.setTimeout(function () {
-          fun.apply(null, args);
+        lastTimeout = window.setTimeout(function (evt) {
+          fun.apply(evt, args);
         }, DEBOUNCE_INTERVAL);
       };
     }

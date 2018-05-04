@@ -119,12 +119,12 @@
     function toggleActiveButton() {
       var activeButton = filtersSection.querySelector('.img-filters__button--active');
       activeButton.classList.remove('img-filters__button--active');
-      evt.currentTarget.classList.add('img-filters__button--active');
+      evt.target.classList.add('img-filters__button--active');
     }
 
     function applySorting() {
       // Хватает id текущего элемента и мэтчит соответствующую сортировку
-      sortPictures[FILTERS_DICTIONARY[evt.currentTarget.id]]();
+      sortPictures[FILTERS_DICTIONARY[evt.target.id]]();
       renderPictures();
     }
 
@@ -148,8 +148,6 @@
   });
 
   filtersButtons.forEach(function (it) {
-    it.addEventListener('click', function (evt) {
-      window.util.debounce(onFilterClick(evt));
-    });
+    it.addEventListener('click', window.util.debounce(onFilterClick));
   });
 })();
