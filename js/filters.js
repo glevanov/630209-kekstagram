@@ -125,7 +125,7 @@
     var INIT_SLIDER_VALUE = 100;
     sliderPin.style.left = INIT_SLIDER_VALUE + '%';
     sliderLevel.style.width = INIT_SLIDER_VALUE + '%';
-    sliderValueInput.value = INIT_SLIDER_VALUE;
+    sliderValueInput.setAttribute('value', INIT_SLIDER_VALUE);
     window.slider.sliderValue = INIT_SLIDER_VALUE;
   }
 

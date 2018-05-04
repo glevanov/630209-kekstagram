@@ -7,7 +7,7 @@
   var sliderPin = sliderElement.querySelector('.scale__pin');
   var sliderLine = sliderElement.querySelector('.scale__line');
   var sliderLevel = sliderElement.querySelector('.scale__level');
-
+  var sliderValueInput = sliderElement.querySelector('.scale__value');
 
   function onSliderClick(evt) {
     var sliderXPosition = evt.clientX;
@@ -48,9 +48,14 @@
         window.slider.sliderValue = Math.round(sliderRelativePosition / SLIDER_LINE_WIDTH * 100);
       }
 
+      function updateSliderFieldValue() {
+        sliderValueInput.setAttribute('value', window.slider.sliderValue);
+      }
+
       calculateSliderPosition();
       renderSliderPosition();
       updateSliderValue();
+      updateSliderFieldValue();
     }
 
     function onMouseUp(upEvt) {
