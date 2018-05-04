@@ -1,7 +1,5 @@
 'use strict';
-// Зависит от slider.js
 (function () {
-  var filterEffectLevel;
   var currentFilter;
   var filterParameters = {
     NONE: {
@@ -53,15 +51,13 @@
   var filtersList = uploadSection.querySelector('.effects__list');
   var slider = uploadSection.querySelector('.img-upload__scale');
   var sliderPin = slider.querySelector('.scale__pin');
+  var sliderLevel = slider.querySelector('.scale__level');
+  var sliderValueInput = slider.querySelector('.scale__value');
 
   function setDefaultValues() {
-    updateFilterEffectLevel();
+    resetSlider();
     currentFilter = 'NONE';
     window.util.hideElement(slider);
-  }
-
-  function updateFilterEffectLevel() {
-    filterEffectLevel = parseInt(window.slider.sliderValue, 10);
   }
 
   function appendFiltersEventListeners() {
@@ -77,7 +73,7 @@
   function onFilterClick(evt) {
     var currentFilterCSSClass = evt.currentTarget.classList[1];
     currentFilter = FILTERS_LOOKUP_DICTIONARY[currentFilterCSSClass];
-    updateFilterEffectLevel();
+    resetSlider();
     applyCurrentFilter();
 
     if (currentFilter !== 'NONE') {
@@ -90,7 +86,7 @@
   function calculateFilterValue() {
     var min = filterParameters[currentFilter].MIN;
     var max = filterParameters[currentFilter].MAX;
-    return (max - min) * (filterEffectLevel / 100) + min;
+    return (max - min) * (window.slider.sliderValue / 100) + min;
   }
 
   function getFilterCSSString() {
@@ -112,7 +108,6 @@
   function onSliderClick() {
     function onMouseMove(moveEvt) {
       moveEvt.preventDefault();
-      updateFilterEffectLevel();
       applyCurrentFilter();
     }
 
@@ -124,6 +119,14 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  }
+
+  function resetSlider() {
+    var INIT_SLIDER_VALUE = 100;
+    sliderPin.style.left = INIT_SLIDER_VALUE + '%';
+    sliderLevel.style.width = INIT_SLIDER_VALUE + '%';
+    sliderValueInput.value = INIT_SLIDER_VALUE;
+    window.slider.sliderValue = INIT_SLIDER_VALUE;
   }
 
   setDefaultValues();
