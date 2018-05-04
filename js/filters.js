@@ -54,9 +54,15 @@
   var sliderLevel = slider.querySelector('.scale__level');
   var sliderValueInput = slider.querySelector('.scale__value');
 
+  function reverseFilterLookup(value) {
+    // Выполняет обратный поиск по словарю, т.е. по значению возвращяет ключ
+    return Object.keys(FILTERS_LOOKUP_DICTIONARY)[Object.values(FILTERS_LOOKUP_DICTIONARY).indexOf(value)];
+  }
+
   function setDefaultValues() {
     resetSlider();
     currentFilter = 'NONE';
+    picturePreview.classList.add(reverseFilterLookup(currentFilter));
     window.util.hideElement(slider);
   }
 
@@ -102,6 +108,8 @@
 
   function applyCurrentFilter() {
     picturePreview.setAttribute('style', getFilterCSSString());
+    picturePreview.setAttribute('class', '');
+    picturePreview.classList.add(reverseFilterLookup(currentFilter));
   }
 
   // Реализует применение фильтра при движении слайдера
