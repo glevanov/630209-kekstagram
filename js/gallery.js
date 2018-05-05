@@ -57,6 +57,7 @@
       });
     }
 
+    var fragment = document.createDocumentFragment();
     for (var k = 0; k < PICTURES_QUANTITY; k++) {
       var pictureElement = pictureTemplate.cloneNode(true);
 
@@ -65,8 +66,9 @@
       pictureElement.querySelector('.picture__stat--likes').textContent = picturesArray[k].likes;
       pictureElement.querySelector('.picture__stat--comments').textContent = picturesArray[k].comments.length;
 
-      picturesElement.appendChild(pictureElement);
+      fragment.appendChild(pictureElement);
     }
+    picturesElement.appendChild(fragment);
   }
 
   function appendPicturesEventListeners(picturesArray) {
@@ -92,8 +94,8 @@
   function onFilterClick(evt) {
     var FILTERS_DICTIONARY = {
       'filter-popular': 'byLikes',
-      'filter-new': 'byComments',
-      'filter-discussed': 'asRecieved',
+      'filter-new': 'asRecieved',
+      'filter-discussed': 'byComments',
       'filter-random': 'atRandom'
     };
 

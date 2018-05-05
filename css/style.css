@@ -534,6 +534,7 @@ main {
 .resize {
   margin: 0;
   padding: 10px;
+  z-index: 10;
 
   font-size: 0;
   border: 0;
